@@ -388,6 +388,7 @@ export function OfflineCourse({ apiBaseUrl }) {
                             <p className=" block mb-1 font-semibold">Course Image </p>
                             <div className="border p-5 w-full h-auto border-gray-200  shadow-xs ">
                                 <img
+                                loading="lazy"
                                     className="object-cover mb-5  max-w-[300px] max-h-[250px]"
                                     src={previewImage}
                                 />
@@ -482,6 +483,7 @@ export function OfflineCourse({ apiBaseUrl }) {
                             <p className="block mb-1 font-semibold">Course Banner Image </p>
                             <div className="border p-5 w-full h-auto border-gray-200  shadow-xs ">
                                 <img
+                                loading="lazy"
                                     className="object-cover mb-5  max-w-[300px] max-h-[300px]"
                                     src={courseBannerImgPreview}
                                 />
@@ -559,6 +561,7 @@ export function OfflineCourse({ apiBaseUrl }) {
                             <p className="block mb-1 font-semibold">Course Hero Image </p>
                             <div className="border p-5 w-full h-auto border-gray-200  shadow-xs ">
                                 <img
+                                loading="lazy"
                                     className="object-cover mb-5  min-w-[300px] max-h-[300px]"
                                     src={courseHeroImgPreview}
                                 />

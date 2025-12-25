@@ -47,7 +47,7 @@ export function ViewOfflineCourse({ apiBaseUrl, setActiveTab }) {
                     {offlineCourseData.map(course => (
 
                         <div key={course._id} className="border border-gray-300 -lg overflow-hidden shadow-sm capitalize">
-                            <img src={course.courseImage} alt={course.courseName} className="w-full h-[400px] object-cover object-top" />
+                            <img loading="lazy" src={course.courseImage} alt={course.courseName} className="w-full h-[400px] object-cover object-top" />
                             <div className="p-4">
                                 <h2 className="text-xl font-semibold mb-2">{course.courseName}</h2>
                                 <p className="text-sm text-gray-700 mb-4">{course.cousreHeadline}</p>

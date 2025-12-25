@@ -123,16 +123,33 @@ export function AddSlider({ apiBaseUrl }) {
                 <div className="border p-5 w-full h-auto border-gray-200 rounded shadow-xs ">
 
                     <img
-
+loading="lazy"
                         className="object-cover h-[400px] object-center mb-5 w-fit  "
                         src={previewImage}
                     />
 
                     <input
                         name="sliderImage"
-                        onChange={(e) =>
-                            setPreviewImage(URL.createObjectURL(e.target.files[0]))
-                        }
+                        onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (!file) return;
+
+                            const maxSize = 500 * 1024; // 500KB
+
+                            if (file.size > maxSize) {
+                                Swal.fire({
+                                    title: "Image Size Must Be Less than 500kb",
+                                    icon: "warning",
+                                    color: "black",
+                                    iconColor: "black",
+                                    confirmButtonColor: "black",
+                                });
+                                e.target.value = "";
+                                return;
+                            }
+
+                            setPreviewImage(URL.createObjectURL(file));
+                        }}
                         type="file"
                         className="bg-gray-950 duration-300 hover:bg-green-900 px-5  py-2 text-white rounded cursor-pointer"
                     />

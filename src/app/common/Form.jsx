@@ -68,6 +68,7 @@ export default function Form() {
     >
       <div className="fixed top-[50%] overflow-hidden bg-white rounded-[10%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
         <img
+        loading="lazy"
           className="max-w-[180px] -mt-7 mx-auto h-[180px] object-contain border-gray-100"
           src="/logo.jpg"
           alt=""

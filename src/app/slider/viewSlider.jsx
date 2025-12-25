@@ -29,7 +29,7 @@ export function ViewSlider({ apiBaseUrl, setActiveTab }) {
                     {sliderData.map(item => (
 
                         <div key={item._id} className="border border-gray-300 rounded-lg overflow-hidden shadow-sm capitalize">
-                            <img src={item.sliderImage} alt={item.sliderName} className="w-full h-[200px] object-cover object-top" />
+                            <img loading="lazy" src={item.sliderImage} alt={item.sliderName} className="w-full h-[200px] object-cover object-top" />
                             <div className="p-4">
                                 <h2 className="text-[18px] mb-2"> <b>headings</b> - {item.sliderHeadlineFirst} , {item.sliderHeadlineSecond}</h2>
                                 <p className="text-[18px] mb-4 capitalize"><b>description</b> - {item.sliderDescription}</p>

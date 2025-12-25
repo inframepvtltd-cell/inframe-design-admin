@@ -89,8 +89,7 @@ function EnquiryList({ apibaseUrl, setEnquiryData, enquiryData }) {
 
     useEffect(() => {
         viewEnquiryEntries()
-    }, [enquiryData])
-
+    }, [])
 
 
     return (
