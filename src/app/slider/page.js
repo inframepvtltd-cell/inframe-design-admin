@@ -23,7 +23,7 @@ export default function Slider() {
                 <Header />
                 <main className="w-full px-10 py-3  h-[90vh] overflow-y-scroll scrollbar" >
                     <header className="mb-4 ">
-                        <h1 className="text-[40px] font-bold text-gray-800 capitalize">
+                        <h1 className="text-[40px] font-bold text-black capitalize">
                             Add & view slider
                         </h1>
                     </header>
@@ -32,18 +32,18 @@ export default function Slider() {
                         <button
                             onClick={() => setActiveTab("add-slider")}
                             className={`${activeTab === "add-slider"
-                                ? "bg-gray-950 text-white border-transparent"
+                                ? "bg-black text-white border-transparent"
                                 : ""
-                                } cursor-pointer hover:bg-gray-950 capitalize hover:text-white px-3 py-2 rounded duration-300 border-2 border-gray-950 hover:border-transparent`}
+                                } cursor-pointer hover:bg-black capitalize hover:text-white px-3 py-2 rounded duration-300 border-2 border-black hover:border-transparent`}
                         >
                             Add Slider
                         </button>
                         <button
                             onClick={() => setActiveTab("view-slider")}
                             className={`${activeTab === "view-slider"
-                                ? "bg-gray-950 text-white border-transparent"
+                                ? "bg-black text-white border-transparent"
                                 : ""
-                                } cursor-pointer hover:bg-gray-950 capitalize hover:text-white px-3 py-2 rounded duration-300 border-2 border-gray-950 hover:border-transparent`}
+                                } cursor-pointer hover:bg-black capitalize hover:text-white px-3 py-2 rounded duration-300 border-2 border-black hover:border-transparent`}
                         >
                             View Slider
                         </button>
