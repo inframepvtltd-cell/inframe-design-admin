@@ -12,26 +12,14 @@ export function OfflineCourse({ apiBaseUrl }) {
 
 
     const [courseFaqsQuestions, setCourseFaqQuestions] = useState([])
-
     const [courseFaqsAnswer, setCourseFaqsAnswer] = useState([])
-
-
     const [courseName, setCourseName] = useState("");
-
     const [courseAbout, setCourseAbout] = useState("");
-
     const [cousreHeadline, setCousreHeadline] = useState([])
-
     const [coursePrice, setCoursePrice] = useState("");
-
     const [coursePoints, setCoursePoints] = useState(["", "", ""]);
-
     const [courseMetaDescription, setCourseMetaDescription] = useState('')
-
     const [courseMetaTitle, setCourseMetaTitle] = useState('')
-
-
-
     const [editId, setEditId] = useState('');
 
     useEffect(() => {
@@ -231,7 +219,22 @@ export function OfflineCourse({ apiBaseUrl }) {
                             iconColor: 'black',
                             color: 'black'
                         }).then((res) => {
-                            window.location.reload()
+                            if (res.isConfirmed) {
+                                window.history.replaceState(
+                                    null,
+                                    '',
+                                    window.location.pathname
+                                )
+                                setCourseFaqQuestions([])
+                                setCourseFaqsAnswer([])
+                                setCourseName("")
+                                setCourseAbout("")
+                                setCousreHeadline([])
+                                setCoursePrice("");
+                                setCoursePoints(["", "", ""])
+                                setCourseMetaDescription('')
+                                setCourseMetaTitle('')
+                            }
                         })
                     }
                 })
@@ -294,7 +297,15 @@ export function OfflineCourse({ apiBaseUrl }) {
                         icon: 'success'
                     }).then((res) => {
                         if (res.isConfirmed) {
-                            window.location.reload();
+                            setCourseFaqQuestions([])
+                            setCourseFaqsAnswer([])
+                            setCourseName("")
+                            setCourseAbout("")
+                            setCousreHeadline([])
+                            setCoursePrice("");
+                            setCoursePoints(["", "", ""])
+                            setCourseMetaDescription('')
+                            setCourseMetaTitle('')
                         }
                     })
                 }
@@ -388,7 +399,7 @@ export function OfflineCourse({ apiBaseUrl }) {
                             <p className=" block mb-1 font-semibold">Course Image </p>
                             <div className="border p-5 w-full h-auto border-gray-200  shadow-xs ">
                                 <img
-                                loading="lazy"
+                                    loading="lazy"
                                     className="object-cover mb-5  max-w-[300px] max-h-[250px]"
                                     src={previewImage}
                                 />
@@ -483,7 +494,7 @@ export function OfflineCourse({ apiBaseUrl }) {
                             <p className="block mb-1 font-semibold">Course Banner Image </p>
                             <div className="border p-5 w-full h-auto border-gray-200  shadow-xs ">
                                 <img
-                                loading="lazy"
+                                    loading="lazy"
                                     className="object-cover mb-5  max-w-[300px] max-h-[300px]"
                                     src={courseBannerImgPreview}
                                 />
@@ -561,7 +572,7 @@ export function OfflineCourse({ apiBaseUrl }) {
                             <p className="block mb-1 font-semibold">Course Hero Image </p>
                             <div className="border p-5 w-full h-auto border-gray-200  shadow-xs ">
                                 <img
-                                loading="lazy"
+                                    loading="lazy"
                                     className="object-cover mb-5  min-w-[300px] max-h-[300px]"
                                     src={courseHeroImgPreview}
                                 />

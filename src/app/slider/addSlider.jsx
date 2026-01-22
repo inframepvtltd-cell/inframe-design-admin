@@ -123,7 +123,7 @@ export function AddSlider({ apiBaseUrl }) {
                 <div className="border p-5 w-full h-auto border-gray-200 rounded shadow-xs ">
 
                     <img
-loading="lazy"
+                        loading="lazy"
                         className="object-cover h-[400px] object-center mb-5 w-fit  "
                         src={previewImage}
                     />

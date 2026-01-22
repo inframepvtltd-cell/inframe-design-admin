@@ -1,9 +1,12 @@
-"use client";
+'use client';
 import React, { useEffect, useState } from "react";
 import SideBar from "../common/SideBar";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Header from "../common/Header";
+import FullScreenLoader from "../components/Loading";
+import { MdDelete } from "react-icons/md";
+
 
 export default function Enquiry() {
     const apibaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -12,45 +15,51 @@ export default function Enquiry() {
     const [enquiryStates, setEnquiryStates] = useState([]);
     const [stateName, setStateName] = useState("");
     const [cityName, setCityName] = useState("");
-    const [tableData, setTableData] = useState("");
-    const [enquiryData, setEnquiryData] = useState([])
+    const [tableData, setTableData] = useState([]);
+    const [enquiryData, setEnquiryData] = useState([]);
+    const [loading, setLoading] = useState(true); // 🔹 loading state
 
     return (
-        <div className=" grid grid-cols-[30%_auto] ">
+        <div className="grid grid-cols-[30%_auto]">
+            {loading && <FullScreenLoader />}
             <SideBar />
             <div>
-
                 <Header />
-
                 <main className="h-[90vh] overflow-y-scroll w-full px-10 py-3">
-
-
                     <h2 className="text-[40px] font-bold mb-6 capitalize">View Enquiries</h2>
-                    <div>
-                        <div className="grid grid-cols-4 gap-3 my-6">
-                            <button
-                                onClick={() => setActiveTab("enquiry-list")}
-                                className={`${activeTab === "enquiry-list"
-                                    ? "bg-gray-950 text-white border-transparent"
-                                    : ""
-                                    } cursor-pointer hover:bg-gray-950 hover:text-white px-3 py-2  duration-300 border-2 border-gray-950 hover:border-transparent`}
-                            >
-                                Enquiry List
-                            </button>
-                            <button
-                                onClick={() => setActiveTab("enquiry-data")}
-                                className={`${activeTab === "enquiry-data"
-                                    ? "bg-gray-950 text-white border-transparent"
-                                    : ""
-                                    } cursor-pointer hover:bg-gray-950 hover:text-white px-3 py-2  duration-300 border-2 border-gray-950 hover:border-transparent`}
-                            >
-                                Add Enquiry Data
-                            </button>
-                        </div>
+
+                    {/* Tabs */}
+                    <div className="grid grid-cols-4 gap-3 my-6">
+                        <button
+                            onClick={() => setActiveTab("enquiry-list")}
+                            className={`${activeTab === "enquiry-list"
+                                ? "bg-gray-950 text-white border-transparent"
+                                : ""
+                                } cursor-pointer hover:bg-gray-950 hover:text-white px-3 py-2 duration-300 border-2 border-gray-950 hover:border-transparent`}
+                        >
+                            Enquiry List
+                        </button>
+                        <button
+                            onClick={() => setActiveTab("enquiry-data")}
+                            className={`${activeTab === "enquiry-data"
+                                ? "bg-gray-950 text-white border-transparent"
+                                : ""
+                                } cursor-pointer hover:bg-gray-950 hover:text-white px-3 py-2 duration-300 border-2 border-gray-950 hover:border-transparent`}
+                        >
+                            Add Enquiry Data
+                        </button>
                     </div>
+
+                    {/* Conditional Tabs */}
                     {activeTab === "enquiry-list" && (
-                        <EnquiryList enquiryData={enquiryData} setEnquiryData={setEnquiryData} apibaseUrl={apibaseUrl} />
+                        <EnquiryList
+                            enquiryData={enquiryData}
+                            setEnquiryData={setEnquiryData}
+                            apibaseUrl={apibaseUrl}
+                            setLoading={setLoading}
+                        />
                     )}
+
                     {activeTab === "enquiry-data" && (
                         <AddEnquiryData
                             tableData={tableData}
@@ -66,88 +75,74 @@ export default function Enquiry() {
                     )}
                 </main>
             </div>
-
         </div>
     );
 }
 
-function Dot() {
-    return <div className="w-4 h-4 border-4  bg-white -[10px]"></div>;
-}
-
-function EnquiryList({ apibaseUrl, setEnquiryData, enquiryData }) {
-
-
-    const viewEnquiryEntries = () => {
-        axios
-            .get(`${apibaseUrl}/enquiry/all-entries`)
-            .then((res) => res.data)
-            .then((finalRes) => {
-                setEnquiryData(finalRes.enquiryData)
-            });
-    }
+// ------------------- EnquiryList Component -------------------
+function EnquiryList({ apibaseUrl, setEnquiryData, enquiryData, setLoading }) {
+    const viewEnquiryEntries = async () => {
+        try {
+            setLoading(true);
+            const res = await axios.get(`${apibaseUrl}/enquiry/all-entries`);
+            const finalRes = res.data;
+            if (finalRes.status === 1) {
+                setEnquiryData(finalRes.enquiryData || []);
+            } else {
+                setEnquiryData([]);
+            }
+        } catch (err) {
+            console.error(err);
+            setEnquiryData([]);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        viewEnquiryEntries()
-    }, [])
+        viewEnquiryEntries(); // 🔹 fetch only once
+    }, []);
 
+    if (!enquiryData || enquiryData.length === 0) {
+        return (
+            <div className="text-center py-10 text-gray-500 font-semibold">
+                No enquiries found
+            </div>
+        );
+    }
 
     return (
         <div className="bg-white font-sans min-h-screen">
-            <table className="min-w-full overflow-x-scroll  border border-gray-300">
+            <table className="min-w-full overflow-x-scroll border border-gray-300">
                 <thead className="bg-gray-100">
                     <tr className="text-sm">
-                        <th className="border border-gray-300 px-2 py-2 text-left">
-                            Sr. No
-                        </th>
+                        <th className="border border-gray-300 px-2 py-2 text-left">Sr. No</th>
                         <th className="border border-gray-300 px-2 py-2 text-left">Name</th>
-                        <th className="border border-gray-300 px-2 py-2 text-left">
-                            Email
-                        </th>
-                        <th className="border border-gray-300 px-2 py-2 text-left">
-                            Phone
-                        </th>
-                        <th className="border border-gray-300 px-2 py-2 text-left">
-                            State
-                        </th>
+                        <th className="border border-gray-300 px-2 py-2 text-left">Email</th>
+                        <th className="border border-gray-300 px-2 py-2 text-left">Phone</th>
+                        <th className="border border-gray-300 px-2 py-2 text-left">State</th>
                         <th className="border border-gray-300 px-2 py-2 text-left">City</th>
-                        <th className="border border-gray-300 px-2 py-2 text-left">
-                            Program
-                        </th>
-                        <th className="border border-gray-300 px-2 py-2 text-left">
-                            Course
-                        </th>
-                        <th className="border border-gray-300 px-2 py-2 text-left">
-                            Action
-                        </th>
+                        <th className="border border-gray-300 px-2 py-2 text-left">Program</th>
+                        <th className="border border-gray-300 px-2 py-2 text-left">Course</th>
+                        <th className="border border-gray-300 px-2 py-2 text-left">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-
-                    {enquiryData.map((item, index) => {
-                        return (
-                            <tr
-                                key={index}
-
-                            // className={`${idx % 2 === 0 ? "bg-gray-50" : ""} text-sm`}
-                            >
-                                <td className="border border-gray-300 px-2 py-2 text-center">{index + 1}</td>
-                                <td className="border border-gray-300 px-2 py-2">{item.enquiryName}</td>
-                                <td className="border border-gray-300 px-2 py-2">{item.enquiryEmail}</td>
-                                <td className="border border-gray-300 px-2 py-2">{item.enquiryPhone}</td>
-                                <td className="border border-gray-300 px-2 py-2">{item.enquiryState}</td>
-                                <td className="border border-gray-300 px-2 py-2">{item.enquiryCity}</td>
-                                <td className="border border-gray-300 px-2 py-2">{item.enquiryProgram}</td>
-                                <td className="border border-gray-300 px-2 py-2">{item.enquiryCourse}</td>
-                                <td className="border border-gray-300 px-2 py-2 text-center">
-                                    <button className="text-black text-sm cursor-pointer">
-                                        Mark
-                                    </button>
-                                </td>
-                            </tr>
-                        )
-                    })}
-
+                    {enquiryData.map((item, index) => (
+                        <tr key={index}>
+                            <td className="border border-gray-300 px-2 py-2 text-center">{index + 1}</td>
+                            <td className="border border-gray-300 px-2 py-2">{item.enquiryName}</td>
+                            <td className="border border-gray-300 px-2 py-2">{item.enquiryEmail}</td>
+                            <td className="border border-gray-300 px-2 py-2">{item.enquiryPhone}</td>
+                            <td className="border border-gray-300 px-2 py-2">{item.enquiryState}</td>
+                            <td className="border border-gray-300 px-2 py-2">{item.enquiryCity}</td>
+                            <td className="border border-gray-300 px-2 py-2">{item.enquiryProgram}</td>
+                            <td className="border border-gray-300 px-2 py-2">{item.enquiryCourse}</td>
+                            <td className="border border-gray-300 px-2 py-2 text-center">
+                                <button className="text-black text-sm cursor-pointer">Mark</button>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>
@@ -183,7 +178,17 @@ function AddEnquiryData({
                             window.location.reload();
                         }
                     });
-                } else {
+                }
+                else if (finalRes.status == -1) {
+                    Swal.fire({
+                        title: "City name is already exist !",
+                        icon: "error",
+                        background: "white",
+                        iconColor: "black",
+                        confirmButtonColor: "black",
+                    });
+                }
+                else {
                     Swal.fire({
                         title: "State name is already exist !",
                         icon: "warning",
@@ -252,6 +257,63 @@ function AddEnquiryData({
         viewEnquiryState();
     }, []);
 
+
+
+    const deleteCity = async (id) => {
+        if (!id) {
+            Swal.fire('Error!', 'City ID is required.', 'error');
+            return;
+        }
+
+        // Ask for confirmation before deleting
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            iconColor: 'black',
+            showCancelButton: true,
+            confirmButtonColor: 'black',
+            cancelButtonColor: 'gray',
+            confirmButtonText: 'Yes, delete it!'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                // Send delete request to server
+                const response = await axios.post(`${apibaseUrl}/enquiry/delete-city/${id}`);
+                const resData = response.data;
+
+                // Handle different backend responses
+                switch (resData.status) {
+                    case 1:
+                        Swal.fire('Deleted!', resData.msg || 'The city has been deleted.', 'success');
+                        viewCity(); // Refresh city list
+                        break;
+                    case -1:
+                        Swal.fire('Error!', resData.msg || 'City ID is missing.', 'error');
+                        break;
+                    case -2:
+                        Swal.fire('Error!', resData.msg || "Can't delete city from the database.", 'error');
+                        break;
+                    case -5:
+                        Swal.fire('Error!', resData.msg || 'Something went wrong.', 'error');
+                        break;
+                    default:
+                        Swal.fire('Error!', 'Unexpected response from server.', 'error');
+                }
+
+            } catch (error) {
+                Swal.fire(
+                    'Error!',
+                    error.response?.data?.msg || error.message || 'Something went wrong!',
+                    'error'
+                );
+            }
+        }
+    };
+
+
+
     return (
         <div className="bg-white font-sans min-h-screen">
             <form onSubmit={saveState} className="mb-[30px]">
@@ -301,20 +363,23 @@ function AddEnquiryData({
                 </button>
             </form>
 
-            <div className="bg-white text-black p-6  shadow-md max-w-4xl mx-auto mt-10">
-                <h2 className="text-3xl font-bold mb-6">States and Cities</h2>
+            <div className="bg-gray-50 text-black p-6  shadow-md mt-10">
+                <h2 className="text-2xl font-bold mb-6">States and Cities (Enquiry Places)</h2>
 
                 <table className="w-full border border-gray-300 table-auto">
                     <thead>
                         <tr className="bg-gray-100">
-                            <th className="border border-gray-300 px-4 py-2 text-left">
+                            <th className="border border-gray-300 bg-white px-4 py-2 text-left">
                                 Sr. No
                             </th>
-                            <th className="border border-gray-300 px-4 py-2 text-left">
+                            <th className="border border-gray-300 bg-white px-4 py-2 text-left">
                                 State Name
                             </th>
-                            <th className="border border-gray-300 px-4 py-2 text-left">
+                            <th className="border border-gray-300 bg-white px-4 py-2 text-left">
                                 City
+                            </th>
+                            <th className="border border-gray-300 bg-white px-4 py-2 text-left">
+                                Action
                             </th>
                         </tr>
                     </thead>
@@ -329,13 +394,13 @@ function AddEnquiryData({
                                 <React.Fragment key={state._id}>
                                     {citiesOfState.length === 0 ? (
                                         <tr className="bg-gray-50">
-                                            <td className="border border-gray-300 px-4 py-2">
+                                            <td className="border border-gray-300 bg-white px-4 py-2">
                                                 {idx + 1}
                                             </td>
-                                            <td className="border border-gray-300 px-4 py-2">
+                                            <td className="border border-gray-300 bg-white px-4 py-2">
                                                 {state.stateName}
                                             </td>
-                                            <td className="border border-gray-300 px-4 py-2">
+                                            <td className="border border-gray-300 bg-white px-4 py-2">
                                                 No Cities Added yet
                                             </td>
                                         </tr>
@@ -348,21 +413,24 @@ function AddEnquiryData({
                                                 {cityIndex === 0 && (
                                                     <>
                                                         <td
-                                                            className="border border-gray-300 px-4 py-2"
+                                                            className="border border-gray-300 bg-white px-4 py-2"
                                                             rowSpan={citiesOfState.length}
                                                         >
                                                             {idx + 1}
                                                         </td>
                                                         <td
-                                                            className="border border-gray-300 px-4 py-2"
+                                                            className="border border-gray-300 bg-white px-4 py-2"
                                                             rowSpan={citiesOfState.length}
                                                         >
                                                             {state.stateName}
                                                         </td>
                                                     </>
                                                 )}
-                                                <td className="border border-gray-300 px-4 py-2">
-                                                    {city.cityName}
+                                                <td className="border border-gray-300 bg-white px-4 py-2">
+                                                    <div className="flex items-center justify-between">
+                                                        {city.cityName}
+                                                        <span onClick={() => deleteCity(city._id)} className="hover:text-red-600 cursor-pointer text-xl"><MdDelete /></span>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         ))

@@ -3,3 +3,32 @@
 * {
     font-family: "Poppins", sans-serif;
 }
+
+.black-checkbox {
+    accent-color: black;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #282828;
+    /* light gray */
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #252525;
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #000000 transparent;
+}

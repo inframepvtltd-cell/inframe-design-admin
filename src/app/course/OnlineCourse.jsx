@@ -21,49 +21,28 @@ export function OnlineCourse({ apiBaseUrl }) {
     // all states
 
     const [previewImage, setPreviewImage] = useState("/previewimg.webp");
-
     const [courseBannerImgPreview, setCourseBannerImgPreview] =
         useState("/previewimg.webp");
-
     const [courseHeroImgPreview, setCourseHeroImgPreview] =
         useState("/previewimg.webp");
-
     const [courseName, setCourseName] = useState("");
-
     const [courseAbout, setCourseAbout] = useState("");
-
     const [cousreHeadline, setCousreHeadline] = useState([])
-
     const [coursePrice, setCoursePrice] = useState("");
-
     const [coursePoints, setCoursePoints] = useState(["", "", ""]);
-
     const [whatYouLearnPoints, setWhatYourLearnPoints] = useState(["", "", ""]);
-
     const [studyMaterialName, setStudyMaterialName] = useState([])
-
     const [studyMaterials, setStudyMaterials] = useState([])
-
     const [recordingTitles, setRecordingTitles] = useState([""]);
-
     const [recordingDurations, setRecordingDurations] = useState([""]);
-
     const [recordingUrls, setRecordingUrls] = useState([""]);
-
     const [courseFaqsQuestions, setCourseFaqQuestions] = useState([])
-
     const [courseFaqsAnswer, setCourseFaqsAnswer] = useState([])
-
     const [categoryName, setCategoryName] = useState('')
-
     const [categoryData, setCategoryData] = useState([])
-
     const [staticPath, setStaticPath] = useState('')
-
     const [courseCategory, setCourseCategory] = useState('');
-
     const [courseMetaDescription, setCourseMetaDescription] = useState('')
-
     const [courseMetaTitle, setCourseMetaTitle] = useState('')
 
 
@@ -121,7 +100,33 @@ export function OnlineCourse({ apiBaseUrl }) {
                             iconColor: 'black',
                             color: 'black'
                         }).then((res) => {
-                            window.location.reload()
+                            window.history.replaceState(
+                                null,
+                                '',
+                                window.location.pathname
+                            )
+                            setCourseName("");
+                            setCourseAbout("");
+                            setCousreHeadline([]);
+                            setCoursePrice("");
+                            setCoursePoints(["", "", ""]);
+                            setWhatYourLearnPoints(["", "", ""]);
+                            setCourseFaqQuestions([]);
+                            setCourseFaqsAnswer([]);
+                            setCourseMetaTitle("");
+                            setCourseMetaDescription("");
+                            setPreviewImage("/previewimg.webp");
+                            setCourseBannerImgPreview("/previewimg.webp");
+                            setCourseHeroImgPreview("/previewimg.webp");
+                            setStudyMaterialName([]);
+                            setStudyMaterials([]);
+                            setRecordingTitles([""]);
+                            setRecordingDurations([""]);
+                            setRecordingUrls([""]);
+                            setCategoryName("");
+                            setCategoryData([]);
+                            setCourseCategory("");
+                            setStaticPath("");
                         })
                     }
                     else if (finalRes.status == 2) {
@@ -161,9 +166,25 @@ export function OnlineCourse({ apiBaseUrl }) {
                             iconColor: 'black',
                             color: 'black'
                         })
-                        // .then((res) => {
-                        //     window.location.reload()
-                        // })
+                            .then((res) => {
+                                if (res.isConfirmed) {
+                                    window.history.replaceState(
+                                        null,
+                                        '',
+                                        window.location.pathname
+                                    )
+                                    setCourseFaqQuestions([])
+                                    setCourseFaqsAnswer([])
+                                    setCourseName("")
+                                    setCourseAbout("")
+                                    setCousreHeadline([])
+                                    setCoursePrice("");
+                                    setCoursePoints(["", "", ""])
+                                    setCourseMetaDescription('')
+                                    setCourseMetaTitle('')
+
+                                }
+                            })
                     }
 
                     else if (finalRes.status == 2) {
