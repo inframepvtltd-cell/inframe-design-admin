@@ -15,8 +15,6 @@ export default function AddStudyMaterial() {
 
     //selectedCategory
 
-
-
     // all inputs states
     const [materialTitle, setmaterialTitle] = useState('')
     const [materialSlug, setmaterialSlug] = useState('')
