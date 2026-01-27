@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { Addtestimonial } from "./addTestimonial";
 import { Viewtestimonial } from "./viewTestimonial";
 
-export default function testimonial() {
+export default function Testimonial() {
 
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
