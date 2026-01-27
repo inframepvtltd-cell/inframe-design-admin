@@ -1,13 +1,11 @@
 "use client"
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Header from "../common/Header";
 import SideBar from "../common/SideBar";
-import axios from "axios";
-import Swal from "sweetalert2";
 import Addfreeresources from "./Addfreeresources";
 import Viewfreeresources from "./Viewfreeresources";
 
-export default function freeresources() {
+export default function Freeresources() {
 
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
