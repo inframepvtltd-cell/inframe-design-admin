@@ -29,7 +29,6 @@ export function OfflineCourse({ apiBaseUrl }) {
         }
     }, []);
 
-    const [staticPath, setStaticPath] = useState('')
 
     const [categoryName, setCategoryName] = useState('')
 
@@ -159,9 +158,7 @@ export function OfflineCourse({ apiBaseUrl }) {
                     console.log(finalRes)
                     if (finalRes.status === 1) {
                         const course = finalRes.findCourseById;
-                        const staticPath = finalRes.staticPath;
 
-                        setStaticPath(staticPath);
                         // ✅ Set basic fields
                         setCourseName(course.courseName || "");
                         setCousreHeadline(course.cousreHeadline || "");
@@ -225,6 +222,8 @@ export function OfflineCourse({ apiBaseUrl }) {
                                     '',
                                     window.location.pathname
                                 )
+                                window.location.reload()
+                                setEditId('')
                                 setCourseFaqQuestions([])
                                 setCourseFaqsAnswer([])
                                 setCourseName("")

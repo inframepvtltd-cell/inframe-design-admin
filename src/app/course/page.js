@@ -60,27 +60,27 @@ export default function NewCourse() {
                             <button
                                 onClick={() => setActiveTab("online-course")}
                                 className={`${activeTab === "online-course"
-                                    ? "bg-gray-950 text-white border-transparent"
+                                    ? "bg-black text-white border-transparent"
                                     : ""
-                                    } cursor-pointer hover:bg-gray-950 capitalize hover:text-white px-3 py-2  duration-300 border-2 border-gray-950 hover:border-transparent`}
+                                    } cursor-pointer hover:bg-black capitalize hover:text-white px-3 py-2 rounded-full  duration-300 border-2  hover:border-transparent`}
                             >
                                 Online Course
                             </button>
                             <button
                                 onClick={() => setActiveTab("view-online-course")}
                                 className={`${activeTab === "view-online-course"
-                                    ? "bg-gray-950 text-white border-transparent"
+                                    ? "bg-black text-white border-transparent"
                                     : ""
-                                    } cursor-pointer hover:bg-gray-950 capitalize hover:text-white px-3 py-2  duration-300 border-2 border-gray-950 hover:border-transparent`}
+                                    } cursor-pointer hover:bg-black capitalize hover:text-white px-3 py-2 rounded-full  duration-300 border-2  hover:border-transparent`}
                             >
                                 view online Course
                             </button>
                             <button
                                 onClick={() => setActiveTab("offline-course")}
                                 className={`${activeTab === "offline-course"
-                                    ? "bg-gray-950 text-white border-transparent"
+                                    ? "bg-black text-white border-transparent"
                                     : ""
-                                    } cursor-pointer hover:bg-gray-950 capitalize hover:text-white px-3 py-2  duration-300 border-2 border-gray-950 hover:border-transparent`}
+                                    } cursor-pointer hover:bg-black capitalize hover:text-white px-3 py-2 rounded-full  duration-300 border-2  hover:border-transparent`}
                             >
                                 Offline Course
                             </button>
@@ -88,9 +88,9 @@ export default function NewCourse() {
                             <button
                                 onClick={() => setActiveTab("view-offline-course")}
                                 className={`${activeTab === "view-offline-course"
-                                    ? "bg-gray-950 text-white border-transparent"
+                                    ? "bg-black text-white border-transparent"
                                     : ""
-                                    } cursor-pointer hover:bg-gray-950 capitalize hover:text-white px-3 py-2  duration-300 border-2 border-gray-950 hover:border-transparent`}
+                                    } cursor-pointer hover:bg-black capitalize hover:text-white px-3 py-2 rounded-full  duration-300 border-2  hover:border-transparent`}
                             >
                                 view  Offline Course
                             </button>

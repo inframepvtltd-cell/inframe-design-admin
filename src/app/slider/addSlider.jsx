@@ -38,6 +38,16 @@ export function AddSlider({ apiBaseUrl }) {
                             confirmButtonColor: 'black'
                         }).then((res) => {
                             window.location.reload()
+                            window.history.replaceState(
+                                null,
+                                '',
+                                window.location.pathname
+                            )
+                            setEditId('')
+                            setPreviewImage('')
+                            setSliderDescription('')
+                            setSliderHeadlineFirst('')
+                            setSliderHeadlineSecond('')
                         })
                     }
                     else {

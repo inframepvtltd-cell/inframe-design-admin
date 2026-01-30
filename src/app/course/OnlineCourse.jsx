@@ -40,8 +40,8 @@ export function OnlineCourse({ apiBaseUrl }) {
     const [courseFaqsAnswer, setCourseFaqsAnswer] = useState([])
     const [categoryName, setCategoryName] = useState('')
     const [categoryData, setCategoryData] = useState([])
-    const [staticPath, setStaticPath] = useState('')
     const [courseCategory, setCourseCategory] = useState('');
+
     const [courseMetaDescription, setCourseMetaDescription] = useState('')
     const [courseMetaTitle, setCourseMetaTitle] = useState('')
 
@@ -56,11 +56,6 @@ export function OnlineCourse({ apiBaseUrl }) {
     const addWhatYouLearn = () => {
         setWhatYourLearnPoints([...whatYouLearnPoints, ""]);
     };
-
-    const [faqs, setFaqs] = useState([
-        { question: "", answer: "" },
-        { question: "", answer: "" },
-    ]);
 
     const addRecording = () => {
         setRecordingTitles([...recordingTitles, ""]);
@@ -105,6 +100,8 @@ export function OnlineCourse({ apiBaseUrl }) {
                                 '',
                                 window.location.pathname
                             )
+                            window.location.reload()
+                            setEditId('')
                             setCourseName("");
                             setCourseAbout("");
                             setCousreHeadline([]);
@@ -126,7 +123,6 @@ export function OnlineCourse({ apiBaseUrl }) {
                             setCategoryName("");
                             setCategoryData([]);
                             setCourseCategory("");
-                            setStaticPath("");
                         })
                     }
                     else if (finalRes.status == 2) {
@@ -344,9 +340,7 @@ export function OnlineCourse({ apiBaseUrl }) {
                 .then((finalRes) => {
                     if (finalRes.status === 1) {
                         const course = finalRes.findCourseById;
-                        const staticPath = finalRes.staticPath;
 
-                        setStaticPath(staticPath);
                         // ✅ Set basic fields
                         setCourseName(course.courseName || "");
                         setCousreHeadline(course.cousreHeadline || "");
@@ -674,7 +668,7 @@ export function OnlineCourse({ apiBaseUrl }) {
 
 
                         <div className="my-5">
-                            <p className="block mb-1 font-semibold">Course Banner Image </p>
+                            <p className="block mb-1 font-semibold">Course Banner Image (Long Side Image) </p>
                             <div className="border p-5 w-full h-auto border-gray-200  shadow-xs ">
                                 <img
                                     loading="lazy"

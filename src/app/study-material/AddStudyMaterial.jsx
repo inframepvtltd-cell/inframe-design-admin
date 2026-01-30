@@ -17,7 +17,7 @@ export default function AddStudyMaterial() {
   const [booksdescription, setBooksDescription] = useState(["", ""]);
 
   //for edit data
-  const [editId, setEditId] = useState("");
+  const [editId, setEditId] = useState(null);
   useEffect(() => {
     if (typeof window !== "undefined") {
       const idFromHash = window.location.hash.replace("#", "");
@@ -34,8 +34,12 @@ export default function AddStudyMaterial() {
   const [materialSummeries, setmaterialSummeries] = useState(["", ""]);
   const [materialPrice, setMaterialPrice] = useState("");
 
+  const [metaTitle, setMetaTitle] = useState('')
+  const [metaDescription, setMetaDescription] = useState('')
+
   const addCategory = async (e) => {
     e.preventDefault();
+
     try {
       const response = await axios.post(
         `${apiBaseUrl}/study-materials/add-category`,
@@ -98,6 +102,9 @@ export default function AddStudyMaterial() {
       formData.append("materialDescription", materialDescription);
       formData.append("materialDetails", materialDetails);
 
+      formData.append("metaTitle", metaTitle)
+      formData.append("metaDescription", metaDescription)
+
       formData.append(
         "materialBooksDescription",
         JSON.stringify(booksdescription),
@@ -130,7 +137,28 @@ export default function AddStudyMaterial() {
         icon: res.data.status === 1 ? "success" : "warning",
         title: res.data.msg,
         confirmButtonColor: "black",
-      });
+      }).then((res) => {
+        window.history.replaceState(
+          null,
+          '',
+          window.location.pathname
+        )
+        window.location.reload()
+        setBooksDescription(['', ''])
+        setFaqs([{ question: "", answer: "" }])
+        setEditId("")
+        setMaterialPrice('')
+        setmaterialTitle('')
+        setmaterialDetails('')
+        setmaterialDescription('')
+        setmaterialSummeries(["", ""])
+        setPreviewImage("/previewimg.webp");
+        setPreviewImageSecond("/previewimg.webp");
+        setmaterialSlug("")
+        setMetaTitle('')
+        setMetaDescription('')
+
+      })
     } catch (error) {
       console.error(error);
       Swal.fire({
@@ -154,21 +182,24 @@ export default function AddStudyMaterial() {
         .then((finalRes) => {
           if (finalRes.status === 1) {
             const sm = finalRes.result;
-            console.log("my console", sm);
             setmaterialTitle(sm.materialTitle || "");
             setmaterialDescription(sm.materialDescription || "");
-            setMaterialPrice(sm.materialPrice);
-            setmaterialSlug(sm.materialSlug);
-            setmaterialSummeries(sm.materialSummeries);
-            setBooksDescription(sm.materialBooksDescription);
-            setFaqs(sm.materialFaqs);
-            setmaterialDetails(sm.materialDetails);
-            setPreviewImage(sm.materialBannerImage.url);
-            setPreviewImageSecond(sm.materialPreviewImage.url);
+            setMaterialPrice(sm.materialPrice || "");
+            setmaterialSlug(sm.materialSlug || "");
+            setmaterialSummeries(sm.materialSummeries || ["", ""]);
+            setBooksDescription(sm.materialBooksDescription || ["", ""]);
+            setFaqs(sm.materialFaqs || [{ question: "", answer: "" }]);
+            setmaterialDetails(sm.materialDetails || "");
+            setPreviewImage(sm.materialBannerImage?.url || "/previewimg.webp");
+            setPreviewImageSecond(sm.materialPreviewImage?.url || "/previewimg.webp");
+            setMetaTitle(sm.metaTitle || "");          // safe default
+            setMetaDescription(sm.metaDescription || ""); // safe default
           }
-        });
+        })
+        .catch((err) => console.error(err));
     }
   }, [editId]);
+
 
   return (
     <div>
@@ -196,7 +227,7 @@ export default function AddStudyMaterial() {
         onSubmit={addstudyMaterial}
         className="max-w-5xl mx-auto p-6 bg-white border border-gray-100 shadow-sm my-8"
       >
-        <h2 className="text-3xl font-bold mb-6">Add Study Material</h2>
+        <h2 className="text-3xl font-bold mb-6 capitalize">{editId ? 'update' : 'Add'} Study Material</h2>
 
         {/* Category Selection */}
         <label className="block mb-1 font-semibold capitalize">
@@ -243,6 +274,33 @@ export default function AddStudyMaterial() {
           className="w-full border border-gray-300 px-3 py-2 mb-3"
           required
         />
+
+        <div className="p-5 border my-3 border-gray-300">
+          <p className="font-bold text-2xl text-red-600">Meta Seo</p>
+          <label className="block mb-1 font-semibold capitalize">
+            meta title
+          </label>
+          <input
+            value={metaTitle}
+            type="text"
+            onChange={(e) => setMetaTitle(e.target.value)}
+            className="w-full border border-gray-300 px-3 py-2 mb-3"
+            required
+          />
+
+          <label className="block mb-1 font-semibold capitalize">
+            meta description
+          </label>
+          <input
+            value={metaDescription}
+            type="text"
+            onChange={(e) => setMetaDescription(e.target.value)}
+            className="w-full border border-gray-300 px-3 py-2 mb-3"
+            required
+          />
+        </div>
+
+
 
         {/* material slug */}
         <label className="block mb-1 font-semibold capitalize">
@@ -395,18 +453,22 @@ export default function AddStudyMaterial() {
         <label className="font-semibold block mt-7">Books (Optional)</label>
 
         {booksdescription.map((bookDes, index) => (
-          <input
-            key={index}
-            type="text"
-            placeholder="Books Description"
-            value={bookDes}
-            className="w-full border border-gray-300 px-3 py-2 mb-4"
-            onChange={(e) => {
-              const updatedBooks = [...booksdescription];
-              updatedBooks[index] = e.target.value;
-              setBooksDescription(updatedBooks);
-            }}
-          />
+          <div className="flex items-center mb-4 gap-2">
+            <span>({index + 1})</span>
+
+            <input
+              key={index}
+              type="text"
+              placeholder="Books Description"
+              value={bookDes}
+              className="w-full border border-gray-300 px-3 py-2 "
+              onChange={(e) => {
+                const updatedBooks = [...booksdescription];
+                updatedBooks[index] = e.target.value;
+                setBooksDescription(updatedBooks);
+              }}
+            />
+          </div>
         ))}
 
         <p
@@ -454,8 +516,8 @@ export default function AddStudyMaterial() {
           + Add FAQ
         </p>
 
-        <button className="py-3 cursor-pointer px-10 bg-black text-white hover:bg-green-900 duration-300 mt-3">
-          Add Study Material
+        <button className="py-3 capitalize cursor-pointer px-10 bg-black text-white hover:bg-green-900 duration-300 mt-3">
+          {editId ? 'update' : 'Add'} Study Material
         </button>
       </form>
     </div>

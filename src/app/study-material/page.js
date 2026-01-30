@@ -19,7 +19,7 @@ export default function StudyMaterial() {
         <main className="p-10">
           <header className="mb-4 ">
             <h1 className="text-[40px] font-bold text-black capitalize">
-              Add & view free resources
+              Add & view study materials
             </h1>
           </header>
           <div className="grid grid-cols-4 gap-3 my-4">
@@ -31,7 +31,7 @@ export default function StudyMaterial() {
                   : ""
               } cursor-pointer hover:bg-black capitalize hover:text-white px-3 py-2 duration-300 border-2 border-black hover:border-transparent`}
             >
-              Add free resources
+              Add study materials
             </button>
             <button
               onClick={() => setActiveTab("view-study-material")}
@@ -41,7 +41,7 @@ export default function StudyMaterial() {
                   : ""
               } cursor-pointer hover:bg-black capitalize hover:text-white px-3 py-2 duration-300 border-2 border-black hover:border-transparent`}
             >
-              View free resources
+              View study materials
             </button>
           </div>
           {activeTab === "add-study-material" && (
