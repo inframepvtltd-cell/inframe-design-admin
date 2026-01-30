@@ -25,12 +25,12 @@ export default function ViewStudyMaterial({ setActiveTab }) {
   return (
     <div>
       <h1 className="font-bold text-xl capitalize mb-3">Study materials</h1>
-      <div className="grid grid-cols-3">
+      <div className="grid grid-cols-3 gap-5 ">
         {studyMaterialData.map((item, index) => {
           return (
-            <div className="border border-gray-300">
+            <div className="border border-gray-300 rounded-lg">
               <img
-                className="w-full h-[200px] object-cover object-center"
+                className="w-full h-[200px] object-cover object-center rounded-t-lg"
                 src={item?.materialPreviewImage?.url}
                 alt=""
               />
@@ -38,7 +38,7 @@ export default function ViewStudyMaterial({ setActiveTab }) {
                 <h2 className="text-xl font-bold capitalize">
                   {item?.materialTitle}
                 </h2>
-                <p>{item?.materialDescription}</p>
+                <p className="line-clamp-3">{item?.materialDescription}</p>
                 <div className="grid grid-cols-3 gap-3 py-2">
                   <button
                     onClick={() => {
